@@ -1,0 +1,169 @@
+package app.controllers
+
+import java.awt.{Dimension, Toolkit}
+import javafx.fxml.{FXML, FXMLLoader}
+import javafx.scene.layout.AnchorPane
+import javafx.scene.{Parent, Scene}
+import javafx.stage.Stage
+
+import javafx.scene.control.Alert
+import javafx.scene.control.Alert.AlertType
+
+import com.jfoenix.controls.JFXTextArea
+import com.jfoenix.controls.JFXPasswordField
+import com.jfoenix.controls.JFXButton
+
+import akka.actor.ActorSystem
+import com.betfair.Configuration
+import com.betfair.service._
+import com.typesafe.config.ConfigFactory
+import scala.concurrent.duration._
+import scala.concurrent._
+import scala.language.postfixOps
+
+class LoginController {
+  //var sessionToken: String = _
+  //var betfairServiceNG: BetfairServiceNG = _
+
+  @FXML var loginPane: AnchorPane = _
+
+  @FXML var user: JFXTextArea = _
+  @FXML var pass: JFXPasswordField = _
+  @FXML var log: JFXButton = _
+
+  def login(): Unit = {
+    println("ok")
+    implicit val system = ActorSystem()
+    import system.dispatcher
+    val conf = ConfigFactory.load()
+    val appKey = conf.getString("betfairService.appKey")
+    //println(appKey)
+    val username = user.getText()
+    val password = pass.getText()
+    val apiUrl = conf.getString("betfairService.apiUrl")
+    val isoUrl = conf.getString("betfairService.isoUrl")
+
+    val config = new Configuration(appKey, username, password, apiUrl, isoUrl)
+    val command = new BetfairServiceNGCommand(config)
+
+    service.betfairServiceNG = new BetfairServiceNG(config, command)
+
+    // log in to obtain a session id
+    val sessionTokenFuture = service.betfairServiceNG.login map {
+      case Some(loginResponse) => {
+        loginResponse.token
+      }
+      case _ => {
+        val alert: Alert = new Alert(AlertType.ERROR)
+        alert.setTitle("Error")
+        alert.setHeaderText("No session token")
+        //alert.setContentText("Ooops, there was an error!")
+
+        alert.showAndWait()
+        throw new BetfairServiceNGException("no session token")
+      }
+    }
+
+    service.sessionToken = Await.result(sessionTokenFuture, 10 seconds)
+    if (service.sessionToken.length != 0) changeStage() else {
+      val alert: Alert = new Alert(AlertType.ERROR)
+      alert.setTitle("Error")
+      alert.setHeaderText("Timeout")
+      //alert.setContentText("Ooops, there was an error!")
+
+      alert.showAndWait()
+    }
+  }
+
+  def changeStage(): Unit = {
+    loginPane.getScene().getWindow().hide()
+    val root: Parent = FXMLLoader.load(getClass().getResource("/fxml/Navigator.fxml"))
+    val scene: Scene = new Scene(root)
+    val stage: Stage = new Stage
+
+    // determine the screen resolution
+    //val screenSize: Dimension = Toolkit.getDefaultToolkit().getScreenSize()
+    //val screenHeight = screenSize.height
+    //val screenWidth = screenSize.width
+    // start in upper left corner
+    stage.setX(0)
+    stage.setY(0)
+    stage.setWidth(0.2*service.screenWidth)
+    stage.setMinWidth(0.2*service.screenWidth)
+    stage.setHeight(service.screenHeight-50)
+    stage.setScene(scene)
+    stage.setTitle("Betfair Trading App")
+    //stage.setAlwaysOnTop(true)
+    import javafx.stage.StageStyle
+    //stage.initStyle(StageStyle.DECORATED)
+    stage.show()
+  }
+}
+
+/*class LoginController {
+  var sessionToken: String = _
+  var betfairServiceNG: BetfairServiceNG = _
+
+  @FXML var loginPane: AnchorPane = _
+
+  @FXML var user: JFXTextArea = _
+  @FXML var pass: JFXPasswordField = _
+  @FXML var log: JFXButton = _
+
+  def login(): Unit = {
+    println("ok")
+    implicit val system = ActorSystem()
+    import system.dispatcher
+    val conf = ConfigFactory.load()
+    val appKey = conf.getString("betfairService.appKey")
+    val username = user.getText()
+    val password = pass.getText()
+    val apiUrl = conf.getString("betfairService.apiUrl")
+    val isoUrl = conf.getString("betfairService.isoUrl")
+
+    val config = new Configuration(appKey, username, password, apiUrl, isoUrl)
+    val command = new BetfairServiceNGCommand(config)
+
+    betfairServiceNG = new BetfairServiceNG(config, command)
+
+    // log in to obtain a session id
+    val sessionTokenFuture = betfairServiceNG.login map {
+      case Some(loginResponse) => {
+        loginResponse.token
+      }
+      case _ => throw new BetfairServiceNGException("no session token")
+    }
+
+    sessionToken = Await.result(sessionTokenFuture, 10 seconds)
+    if (sessionToken.length != 0) changeStage() else println("wrong password")
+  }
+
+  def changeStage(): Unit = {
+    loginPane.getScene().getWindow().hide()
+    val root: Parent = FXMLLoader.load(getClass().getResource("Navigator.fxml"))
+    val scene: Scene = new Scene(root)
+    val stage: Stage = new Stage
+
+    // determine the screen resolution
+    val screenSize: Dimension = Toolkit.getDefaultToolkit().getScreenSize()
+    val screenHeight = screenSize.height
+    val screenWidth = screenSize.width
+    // start in upper left corner
+    stage.setX(0)
+    stage.setY(0)
+    stage.setWidth(0.2*screenWidth)
+    stage.setMinWidth(0.2*screenWidth)
+    stage.setHeight(screenHeight-50)
+    stage.setScene(scene)
+    stage.setTitle("Betfair Trading App")
+    //stage.setAlwaysOnTop(true)
+    //stage.initStyle(StageStyle.UNDECORATED)
+    stage.show()
+  }
+}*/
+
+/*
+tab i enter
+zeby przy kolapsie zmniejszac stage size
+dokowanie w opcjach
+ */

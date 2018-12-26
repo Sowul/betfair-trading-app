@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<TitledPane fx:id="bta" onMouseClicked="#dockNavigator" prefHeight="723.0" prefWidth="278.0" text="Betfair Trading App" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.NavigatorController">
+   <content>
+      <Accordion prefHeight="519.0" prefWidth="274.0">
+        <panes>
+            <TitledPane fx:id="myMarkets" prefHeight="3.0" prefWidth="274.0" text="My Markets">
+               <content>
+                  <TableView fx:id="table" editable="true" onContextMenuRequested="#removeMarket" onMouseClicked="#openMyMarket" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn fx:id="marketCol" prefWidth="219.0" text="Market" />
+                      <TableColumn fx:id="alarmCol" prefWidth="55.0" text="Alarm" />
+                    </columns>
+                  </TableView>
+               </content></TitledPane>
+            <TitledPane animated="false" prefHeight="0.0" prefWidth="274.0" text="Options">
+               <content>
+                  <GridPane prefHeight="508.0" prefWidth="222.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="292.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="567.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="567.0" minHeight="10.0" prefHeight="480.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <JFXCheckBox fx:id="cancelCheckBox" prefHeight="16.0" prefWidth="120.0" text="Cancel after" GridPane.valignment="CENTER" />
+                        <JFXCheckBox fx:id="closeCheckBox" text="Autoclose bets on exit" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <TextField fx:id="minTextField" prefHeight="26.0" prefWidth="132.0" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+               </content>
+            </TitledPane>
+            <TitledPane prefHeight="464.0" prefWidth="274.0" text="Market Navigator">
+               <content>
+                  <SplitPane fx:id="splitPane" dividerPositions="0.5" orientation="VERTICAL" prefWidth="274.0">
+                     <items>
+                        <ChoiceBox fx:id="eventChoiceBox" onMouseClicked="#getEvent" prefHeight="26.0" prefWidth="274.0">
+								<items>
+									<FXCollections fx:factory="observableArrayList">
+    								<String fx:value="American Football" />
+    								<String fx:value="Athletics" />
+    								<String fx:value="Australian Rules" />
+    								<String fx:value="Baseball" />
+    								<String fx:value="Basketball" />
+    								<String fx:value="Bowls" />
+    								<String fx:value="Boxing" />
+    								<String fx:value="Chess" />
+    								<String fx:value="Cricket" />
+    								<String fx:value="Cycling" />
+    								<String fx:value="Darts" />
+    								<String fx:value="E-Sports" />
+    								<String fx:value="Financial Bets" />
+    								<String fx:value="Football" />
+    								<String fx:value="Gaelic Games" />
+    								<String fx:value="Golf" />
+    								<String fx:value="Greyhound Racing" />
+    								<String fx:value="Handball" />
+    								<String fx:value="Horse Racing" />
+    								<String fx:value="Ice Hockey" />
+    								<String fx:value="Mixed Martial Arts" />
+    								<String fx:value="Motor Sport" />
+    								<String fx:value="Poker" />
+    								<String fx:value="Politics" />
+    								<String fx:value="Pool" />
+    								<String fx:value="Rugby League" />
+    								<String fx:value="Rugby Union" />
+    								<String fx:value="Snooker" />
+    								<String fx:value="Special Bets" />
+    								<String fx:value="Tennis" />
+									</FXCollections>
+							</items>
+						</ChoiceBox>
+                        <TreeView fx:id="eventTreeView" onContextMenuRequested="#addToMyMarkets" onMouseClicked="#openLadder" prefHeight="585.0" prefWidth="274.0" />
+                     </items>
+                  </SplitPane>
+               </content>
+            </TitledPane>
+        </panes>
+      </Accordion>
+   </content>
+</TitledPane>

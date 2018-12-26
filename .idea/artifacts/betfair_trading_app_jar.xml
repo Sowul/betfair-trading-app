@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="betfair-trading-app:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/betfair_trading_app_jar</output-path>
+    <root id="archive" name="betfair-trading-app.jar">
+      <element id="module-output" name="betfair-trading-app" />
+      <element id="extracted-dir" path="$USER_HOME$/.ivy2/cache/org.joda/joda-convert/jars/joda-convert-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.ivy2/cache/com.github.nscala-time/nscala-time_2.11/jars/nscala-time_2.11-2.14.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/bf-service-ng.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jfoenix.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.9.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/scalafx_2.11-8.0.92-R10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.8.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

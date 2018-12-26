@@ -1,0 +1,8 @@
+package app.controllers
+
+package object login {
+    
+    val betfairServiceNG: BetfairServiceNG
+    var sessionToken: String
+  }
+}
