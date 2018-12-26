@@ -15,7 +15,9 @@ Below are some old screenshots of the working app.
 ## Adding selection to 'My markets' and setting odds alarm
 ![Screenshot](img/mymarkets1.jpg)
 ![Screenshot](img/mymarkets2.jpg)
+
 ![Screenshot](img/mymarkets3.jpg)
+
 ![Screenshot](img/mymarkets4.jpg)
 ![Screenshot](img/mymarkets5.jpg)
 ![Screenshot](img/mymarkets6.jpg)
